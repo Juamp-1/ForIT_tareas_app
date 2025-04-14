@@ -4,7 +4,7 @@ const cors = require('cors');
 
 //Configuración de la aplicación llamando a express mediante una constante llamada app
 const app = express()
-//
+//Configuracion del puerto de entrada del servidor
 const PORT = process.env.PORT || 3000;
 
 //Variable que contiene el array de tareas
@@ -14,7 +14,8 @@ let = tasks = []
 app.use(express.json());
 app.use(cors());
 
-//Peticiones del servidor:
+//Peticiones del servidor o endpoints:
+
 //Get- Obtener tareas
 app.get('/api/tasks', (req, res) => {
     res.json(tasks); 
