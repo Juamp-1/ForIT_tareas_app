@@ -1,18 +1,29 @@
+//Constantes que almacenan datos necesarios para la ejecución del programa
 const express = require('express')
+const cors = require('cors');
+
 const app = express()
 const PORT = process.env.PORT || 3000;
 
+//Variable que contiene el array de tareas
 let = tasks = []
 
+//Use
 app.use(express.json());
+app.use(cors());
 
-
+//Peticiones del servidor:
+//Get- Obtener tareas
 app.get('/api/tasks', (req, res) => {
     res.json(tasks); 
 });  
 app.get('/',(req, res) => {
     res.send('Hello World!')
 })
+app.get('/api/tasks', (req, res) => {
+    res.json(tasks);
+  });
+//Post- Agregar tarea
 app.post('/api/tasks', (req, res) => {
     const {title, description} = req.body;
 
@@ -31,9 +42,40 @@ app.post('/api/tasks', (req, res) => {
         tasks.push(newTask);
         res.status(201).json(newTask);
         });
+//Put- Actualizar tarea
+app.put('/api/tasks/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, description, complete } = req.body;
+  
+    const task = tasks.find(task => task.id === id);
+    if (!task) {
+      return res.status(404).json({ error: 'Tarea no encontrada' });
+    }
+  
+// Actualizar los campos solo si vienen en el body
+    if (title !== undefined) task.title = title;
+    if (description !== undefined) task.description = description;
+    if (complete !== undefined) task.complete = complete;
+  
+    res.json(task);
+  });
+
+//Delete - Eliminar tarea
+app.delete('/api/tasks/:id', (req, res) => {
+    const { id } = req.params;
+    const index = tasks.findIndex(task => task.id === id);
+  
+    if (index === -1) {
+      return res.status(404).json({ error: 'Tarea no encontrada' });
+    }
+  
+    tasks.splice(index, 1); // Borra la tarea
+    res.status(204).send(); // 204: sin contenido, OK
+  });
+  
 
 
-
+//Inicializa el servidor
 app.listen (PORT, () => {
     console.log("Server runing on port http://localhost:" + PORT);
 });
