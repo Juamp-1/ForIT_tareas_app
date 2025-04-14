@@ -3,12 +3,16 @@ const express = require('express')
 const cors = require('cors');
 
 //Configuración de la aplicación llamando a express mediante una constante llamada app
-const app = express()
+const app = express();
 //Configuracion del puerto de entrada del servidor
 const PORT = process.env.PORT || 3000;
 
-//Variable que contiene el array de tareas
-let = tasks = []
+//Variable que contiene el array de tareas, cerrada con un semicolon para evitar errores, por mas que js 
+//tenga la "ASI" (Automatic Semicolon Insertion), ya que con ciertos caracteres, se puede considerar que 
+//la linea de codigo no acaba y se puede utilizar en la siguiente linea como parte de la misma.
+let = tasks = [];
+
+//Configuración de la aplicación para que acepte datos en formato JSON:
 
 //Use
 app.use(express.json());
@@ -23,9 +27,7 @@ app.get('/api/tasks', (req, res) => {
 app.get('/',(req, res) => {
     res.send('Hello Backend!')
 })
-app.get('/api/tasks', (req, res) => {
-    res.json(tasks);
-  });
+
 //Post- Agregar tarea
 app.post('/api/tasks', (req, res) => {
     const {title, description} = req.body;
