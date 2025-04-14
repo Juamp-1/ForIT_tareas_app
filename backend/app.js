@@ -2,7 +2,9 @@
 const express = require('express')
 const cors = require('cors');
 
+//Configuración de la aplicación llamando a express mediante una constante llamada app
 const app = express()
+//
 const PORT = process.env.PORT || 3000;
 
 //Variable que contiene el array de tareas
@@ -18,7 +20,7 @@ app.get('/api/tasks', (req, res) => {
     res.json(tasks); 
 });  
 app.get('/',(req, res) => {
-    res.send('Hello World!')
+    res.send('Hello Backend!')
 })
 app.get('/api/tasks', (req, res) => {
     res.json(tasks);
