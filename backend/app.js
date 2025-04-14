@@ -27,6 +27,16 @@ app.get('/api/tasks', (req, res) => {
 app.get('/',(req, res) => {
     res.send('Hello Backend!')
 })
+app.get('/api/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  const task = tasks.find(task => task.id === id);
+
+  if (!task) {
+      return res.status(404).json({ error: 'Tarea no encontrada' });
+  }
+
+  res.json(task);
+});
 
 //Post- Agregar tarea
 app.post('/api/tasks', (req, res) => {

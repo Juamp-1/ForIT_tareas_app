@@ -4,10 +4,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 const TaskItem = ({ setTasks: propSetTasks }) => {
     const { id } = useParams();
     const [task, setTask] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditingInternal, setIsEditingInternal] = useState(false); // Estado interno para la edición
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (window.location.pathname.includes(`/tasks/${id}/edit`)) {
+            setIsEditingInternal(true);
+        } else {
+            setIsEditingInternal(false);
+        }
+    }, [window.location.pathname, id]);
 
     useEffect(() => {
         const fetchTask = async () => {
@@ -20,10 +28,13 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
                 setEditDescription(data.description);
             } catch (error) {
                 console.error('Error fetching task:', error);
+                setTask(null);
             }
         };
 
-        fetchTask();
+        if (id) {
+            fetchTask();
+        }
     }, [id]);
 
     if (!task) {
@@ -53,7 +64,6 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
 
             if (response.ok) {
                 setTask(updatedTask);
-                // If setTasks was passed as a prop, update the list as well
                 if (propSetTasks) {
                     propSetTasks(prev =>
                         prev.map(t => (t.id === id ? updatedTask : t))
@@ -65,10 +75,6 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
         } catch (error) {
             console.error('Error al actualizar la tarea', error);
         }
-    };
-
-    const handleEditClick = () => {
-        setIsEditing(true);
     };
 
     const handleSaveClick = async () => {
@@ -84,7 +90,7 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
 
             if (response.ok) {
                 setTask(updatedTask);
-                setIsEditing(false);
+                setIsEditingInternal(false);
                 if (propSetTasks) {
                     propSetTasks(prev =>
                         prev.map(t => (t.id === id ? updatedTask : t))
@@ -99,18 +105,18 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
     };
 
     const handleCancelClick = () => {
-        setIsEditing(false);
+        setIsEditingInternal(false);
         setEditTitle(task.title);
         setEditDescription(task.description);
     };
 
-    if (window.location.pathname.includes('/edit')) {
-        setIsEditing(true);
-    }
+    const handleEditClick = () => {
+        navigate(`/tasks/${id}/edit`);
+    };
 
     return (
         <div>
-            {isEditing ? (
+            {isEditingInternal ? (
                 <div>
                     <h2>Editar Tarea</h2>
                     <input
@@ -125,20 +131,30 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
                         placeholder="Descripción"
                         required
                     />
+                    <div>
+                        <label>
+                            Completada:
+                            <input
+                                type="checkbox"
+                                checked={task?.complete}
+                                onChange={handleCompleteChange}
+                            />
+                        </label>
+                    </div>
                     <button onClick={handleSaveClick}>Guardar</button>
                     <button onClick={handleCancelClick}>Cancelar</button>
                 </div>
             ) : (
                 <div>
                     <h2>Detalles de la Tarea</h2>
-                    <h3>{task.title}</h3>
-                    <p>{task.description}</p>
+                    <h3>{task?.title}</h3>
+                    <p>{task?.description}</p>
                     <div>
                         <label>
                             Completada:
                             <input
                                 type="checkbox"
-                                checked={task.complete}
+                                checked={task?.complete}
                                 onChange={handleCompleteChange}
                                 readOnly // Make it read-only on the details page
                             />
