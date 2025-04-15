@@ -52,16 +52,16 @@ function TaskList({ setTasks: propSetTasks }) {
                             </Link> - {task.description}
                             <span className="ml-2">
                                 {task.complete ? (
-                                    <CheckCircleFill color="green" size={16} className="align-middle mr-1" />
+                                    <CheckCircleFill color="green" size={16} className="align-middle mr-2" />
                                 ) : (
-                                    <XCircleFill color="red" size={16} className="align-middle mr-1" />
+                                    <XCircleFill color="red" size={16} className="align-middle mr-2" />
                                 )}
                             </span>
                         </div>
                         <div>
                             <Link to={`/tasks/${task.id}/edit`} className="btn btn-sm btn-primary mr-2">Editar</Link>
                             <Button variant="danger" size="sm" onClick={() => handleDeleteTask(task.id)}>
-                                <TrashFill size={16} className="align-middle mr-1" /> Eliminar
+                                <TrashFill size={16} className="align-middle mr-2" /> Eliminar
                             </Button>
                         </div>
                     </ListGroup.Item>
@@ -74,8 +74,5 @@ function TaskList({ setTasks: propSetTasks }) {
 
 export default TaskList;
 
-// Cambios realizados:
-// 1. Se eliminaron las importaciones de los iconos SVG locales (TrashIcon, CheckIcon, CrossIcon).
-// 2. Se importaron los componentes de icono TrashFill, CheckCircleFill y XCircleFill desde 'react-bootstrap-icons'.
-// 3. Se reemplazaron las etiquetas <img> con los componentes de icono de Bootstrap Icons, ajustando el color y el tamaño con props.
-// 4. Se añadió la clase 'align-middle mr-1' para una mejor alineación vertical y un pequeño margen a la derecha de los iconos.
+// Cambios realizados en este archivo:
+// 1. Se ajustó la clase 'mr-1' a 'mr-2' en los componentes de icono para aumentar el espaciado a la derecha del icono.

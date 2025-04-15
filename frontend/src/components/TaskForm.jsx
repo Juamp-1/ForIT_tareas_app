@@ -86,15 +86,16 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
                         onChange={e => setDescription(e.target.value)}
                         placeholder="Ingrese la descripción"
                         required
+                        style={{ resize: 'none' }} // Deshabilita el redimensionamiento del textarea
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" className="mr-2">
                     {isEditing ? 'Guardar Cambios' : (
                         <>
-                            <PlusCircleFill size={16} className="align-middle mr-1" />
+                            <PlusCircleFill size={16} className="align-middle mr-2" />
                             Agregar Tarea
                         </>
-                    )}
+                    )}  
                 </Button>
                 <Button variant="secondary" onClick={() => navigate('/tasks')}>Cancelar</Button>
             </Form>
@@ -104,8 +105,6 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
 
 export default TaskForm;
 
-// Cambios realizados:
-// 1. Se eliminó la importación del icono SVG local (PlusIcon).
-// 2. Se importó el componente de icono PlusCircleFill desde 'react-bootstrap-icons'.
-// 3. Se reemplazó la etiqueta <img> con el componente de icono PlusCircleFill, ajustando el tamaño con props.
-// 4. Se añadió la clase 'align-middle mr-1' para una mejor alineación vertical y un pequeño margen a la derecha del icono.
+// Cambios realizados en este archivo:
+// 1. Se ajustó la clase 'mr-1' a 'mr-2' en el componente de icono para aumentar el espaciado a la derecha del icono.
+// 2. Se añadió el estilo en línea 'resize: none' al componente <Form.Control as="textarea"> para evitar que se pueda redimensionar.
