@@ -20,14 +20,14 @@ const TaskItem = () => {
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`);
-                if (!response.ok) throw new Error('Error fetching task');
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/tasks/${id}`);
+                if (!response.ok) throw new Error('Error al obtener la tarea');
                 const data = await response.json();
                 setTask(data);
                 setEditTitle(data.title);
                 setEditDescription(data.description);
             } catch (error) {
-                console.error('Error fetching task:', error);
+                console.error('Error al obtener la tarea:', error);
                 setTask(null);
             }
         };
@@ -43,7 +43,7 @@ const TaskItem = () => {
 
     const handleDelete = async () => {
         try {
-            await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, { method: 'DELETE' });
+            await fetch(`${import.meta.env.VITE_API_BASE_URL}/tasks/${id}`, { method: 'DELETE' });
             navigate('/tasks');
         } catch (error) {
             console.error('Error eliminando tarea', error);
@@ -53,7 +53,7 @@ const TaskItem = () => {
     const handleCompleteChange = async (event) => {
         try {
             const updatedTask = { ...task, complete: event.target.checked };
-            const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/tasks/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const TaskItem = () => {
     const handleSaveClick = async () => {
         try {
             const updatedTask = { ...task, title: editTitle, description: editDescription };
-            const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/tasks/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -159,5 +159,3 @@ const TaskItem = () => {
 };
 
 export default TaskItem;
-
-// Cambio realizado: Se agregó el operador de encadenamiento opcional (?.) al acceder a import.meta.env.

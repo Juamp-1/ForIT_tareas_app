@@ -4,8 +4,7 @@ require('dotenv').config();
 // Constantes que almacenan datos necesarios para la ejecución del programa
 const express = require('express');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid'); // Aunque no lo estás usando actualmente, lo incluyo por si lo necesitas en el futuro
-
+const { v4: uuidv4 } = require('uuid');
 // Configuración de la aplicación llamando a express mediante una constante llamada app
 const app = express();
 // Configuracion del puerto de entrada del servidor
@@ -48,7 +47,7 @@ app.post('/api/tasks', (req, res) => {
 
     if (
         !title || !description) {
-            return res.status(400).json({error: 'Title and description are required.'});
+            return res.status(400).json({error: 'El titulo y descripción son necesarios.'});
         }
 
         const newTask = {
