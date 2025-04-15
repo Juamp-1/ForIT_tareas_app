@@ -12,7 +12,7 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
         if (isEditing) {
             const fetchTask = async () => {
                 try {
-                    const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+                    const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`);
                     if (!response.ok) throw new Error('Error fetching task for edit');
                     const data = await response.json();
                     setTitle(data.title);
@@ -32,7 +32,9 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
         e.preventDefault();
         const taskData = { title, description };
         const method = isEditing ? 'PUT' : 'POST';
-        const url = isEditing ? `http://localhost:3000/api/tasks/${id}` : 'http://localhost:3000/api/tasks';
+        const url = isEditing
+            ? `${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`
+            : `${import.meta.env?.VITE_API_BASE_URL}/tasks`;
 
         try {
             const response = await fetch(url, {
@@ -83,3 +85,5 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
 };
 
 export default TaskForm;
+
+// Cambio realizado: Se agregó el operador de encadenamiento opcional (?.) al acceder a import.meta.env.

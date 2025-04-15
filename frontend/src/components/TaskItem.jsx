@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const TaskItem = ({ setTasks: propSetTasks }) => {
+const TaskItem = () => {
     const { id } = useParams();
     const [task, setTask] = useState(null);
-    const [isEditingInternal, setIsEditingInternal] = useState(false); // Estado interno para la edición
+    const [isEditingInternal, setIsEditingInternal] = useState(false);
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/tasks/${id}`);
+                const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`);
                 if (!response.ok) throw new Error('Error fetching task');
                 const data = await response.json();
                 setTask(data);
@@ -43,8 +43,7 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
 
     const handleDelete = async () => {
         try {
-            await fetch(`http://localhost:3000/api/tasks/${id}`, { method: 'DELETE' });
-            propSetTasks(prev => prev.filter(t => t.id !== id));
+            await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, { method: 'DELETE' });
             navigate('/tasks');
         } catch (error) {
             console.error('Error eliminando tarea', error);
@@ -54,7 +53,7 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
     const handleCompleteChange = async (event) => {
         try {
             const updatedTask = { ...task, complete: event.target.checked };
-            const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
+            const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,11 +63,6 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
 
             if (response.ok) {
                 setTask(updatedTask);
-                if (propSetTasks) {
-                    propSetTasks(prev =>
-                        prev.map(t => (t.id === id ? updatedTask : t))
-                    );
-                }
             } else {
                 console.error('Error al actualizar la tarea');
             }
@@ -80,7 +74,7 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
     const handleSaveClick = async () => {
         try {
             const updatedTask = { ...task, title: editTitle, description: editDescription };
-            const response = await fetch(`http://localhost:3000/api/tasks/${id}`, {
+            const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,11 +85,6 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
             if (response.ok) {
                 setTask(updatedTask);
                 setIsEditingInternal(false);
-                if (propSetTasks) {
-                    propSetTasks(prev =>
-                        prev.map(t => (t.id === id ? updatedTask : t))
-                    );
-                }
             } else {
                 console.error('Error al actualizar la tarea');
             }
@@ -170,3 +159,5 @@ const TaskItem = ({ setTasks: propSetTasks }) => {
 };
 
 export default TaskItem;
+
+// Cambio realizado: Se agregó el operador de encadenamiento opcional (?.) al acceder a import.meta.env.

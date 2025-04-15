@@ -7,8 +7,13 @@ function TaskList() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/tasks');
-                if (!response.ok) throw new Error('La conexión no conexiona D:');
+                const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks`);
+                console.log("Response status:", response.status); // Agregado para debugging
+                console.log("Response ok:", response.ok);       // Agregado para debugging
+                if (!response.ok) {
+                    console.error("Response not OK");          // Agregado para debugging
+                    throw new Error('La conexión no conecta D:');
+                }
                 const data = await response.json();
                 setTasks(data);
             } catch (error) {
@@ -39,3 +44,5 @@ function TaskList() {
 }
 
 export default TaskList;
+
+// Cambio realizado: Se agregaron logs para depurar la respuesta de la API y se agregó el operador de encadenamiento opcional (?.) al acceder a import.meta.env.
