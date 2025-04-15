@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
+import { PlusCircleFill } from 'react-bootstrap-icons'; // Importa el icono de "más"
 
 const TaskForm = ({ setTasks: propSetTasks }) => {
     const { id } = useParams();
@@ -62,29 +64,48 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
     };
 
     return (
-        <div>
+        <Container>
             <h2>{isEditing ? 'Editar Tarea' : 'Crear Nueva Tarea'}</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    placeholder="Título"
-                    required
-                />
-                <textarea
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                    placeholder="Descripción"
-                    required
-                />
-                <button type="submit">{isEditing ? 'Guardar Cambios' : 'Agregar Tarea'}</button>
-                <button type="button" onClick={() => navigate('/tasks')}>Cancelar</button>
-            </form>
-        </div>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                    <Form.Label>Título</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        placeholder="Ingrese el título"
+                        required
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Descripción</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        placeholder="Ingrese la descripción"
+                        required
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit" className="mr-2">
+                    {isEditing ? 'Guardar Cambios' : (
+                        <>
+                            <PlusCircleFill size={16} className="align-middle mr-1" />
+                            Agregar Tarea
+                        </>
+                    )}
+                </Button>
+                <Button variant="secondary" onClick={() => navigate('/tasks')}>Cancelar</Button>
+            </Form>
+        </Container>
     );
 };
 
 export default TaskForm;
 
-// No se realizaron cambios significativos en este componente para la persistencia en Local Storage,
-// ya que la actualización del estado se maneja en TaskList a través de la prop setTasks.
+// Cambios realizados:
+// 1. Se eliminó la importación del icono SVG local (PlusIcon).
+// 2. Se importó el componente de icono PlusCircleFill desde 'react-bootstrap-icons'.
+// 3. Se reemplazó la etiqueta <img> con el componente de icono PlusCircleFill, ajustando el tamaño con props.
+// 4. Se añadió la clase 'align-middle mr-1' para una mejor alineación vertical y un pequeño margen a la derecha del icono.

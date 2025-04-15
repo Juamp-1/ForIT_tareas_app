@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap';
+import { TrashFill, CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'; // Importa los iconos de Bootstrap Icons
 
-const LOCAL_STORAGE_KEY = 'forit_tasks'; // Clave para guardar en Local Storage
+const LOCAL_STORAGE_KEY = 'forit_tasks';
 
 function TaskList({ setTasks: propSetTasks }) {
     const [tasks, setTasks] = useState(() => {
-        // Cargar tareas desde Local Storage al inicializar el estado
         const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
         return storedTasks ? JSON.parse(storedTasks) : [];
     });
 
     useEffect(() => {
-        // Guardar tareas en Local Storage cada vez que la lista de tareas cambia
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
         if (propSetTasks) {
-            propSetTasks(tasks); // Actualizar el estado en el componente padre si existe la prop
+            propSetTasks(tasks);
         }
     }, [tasks, propSetTasks]);
 
@@ -24,15 +24,12 @@ function TaskList({ setTasks: propSetTasks }) {
                 const response = await fetch(`${import.meta.env?.VITE_API_BASE_URL}/tasks`);
                 if (!response.ok) {
                     console.error("Error fetching tasks from API");
-                    return; // No actualizamos el estado con datos fallidos de la API
+                    return;
                 }
                 const data = await response.json();
-                // Al cargar desde la API, podríamos decidir si reemplazar los datos locales o combinarlos.
-                // Por ahora, los reemplazamos.
                 setTasks(data);
             } catch (error) {
                 console.error('Error fetching tasks:', error);
-                // Si falla la API, las tareas del Local Storage seguirán disponibles.
             }
         };
 
@@ -44,34 +41,41 @@ function TaskList({ setTasks: propSetTasks }) {
     };
 
     return (
-        <div>
+        <Container>
             <h2>Tareas:</h2>
-            <ul>
+            <ListGroup>
                 {tasks.map(task => (
-                    <li key={task.id}>
-                        <Link to={`/tasks/${task.id}`}>
-                            <strong>{task.title}</strong>
-                        </Link> - {task.description}
-                        <span>{task.complete ? '✅' : '❌'}</span>
-                        <Link to={`/tasks/${task.id}/edit`}>Editar</Link>
-                        <button onClick={() => handleDeleteTask(task.id)}>Eliminar</button>
-                    </li>
+                    <ListGroup.Item key={task.id} className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <Link to={`/tasks/${task.id}`}>
+                                <strong>{task.title}</strong>
+                            </Link> - {task.description}
+                            <span className="ml-2">
+                                {task.complete ? (
+                                    <CheckCircleFill color="green" size={16} className="align-middle mr-1" />
+                                ) : (
+                                    <XCircleFill color="red" size={16} className="align-middle mr-1" />
+                                )}
+                            </span>
+                        </div>
+                        <div>
+                            <Link to={`/tasks/${task.id}/edit`} className="btn btn-sm btn-primary mr-2">Editar</Link>
+                            <Button variant="danger" size="sm" onClick={() => handleDeleteTask(task.id)}>
+                                <TrashFill size={16} className="align-middle mr-1" /> Eliminar
+                            </Button>
+                        </div>
+                    </ListGroup.Item>
                 ))}
-            </ul>
-            <Link to="/new-task">Crear Nueva Tarea</Link>
-        </div>
+            </ListGroup>
+            <Link to="/new-task" className="btn btn-success mt-3">Crear Nueva Tarea</Link>
+        </Container>
     );
 }
 
 export default TaskList;
 
 // Cambios realizados:
-// 1. Se definió una constante LOCAL_STORAGE_KEY para la clave en Local Storage.
-// 2. El estado 'tasks' se inicializa intentando leer desde Local Storage. Si no hay nada, 
-// se inicializa con un array vacío.
-// 3. Un useEffect se encarga de guardar la lista de tareas en Local Storage 
-// cada vez que el estado 'tasks' cambia.
-// 4. Se agregó la función 'handleDeleteTask' para actualizar el estado local al eliminar una tarea.
-// 5. El botón "Eliminar" ahora utiliza 'handleDeleteTask' para actualizar el estado local.
-// 6. Se modificó el useEffect de la API para no actualizar el estado si la petición falla 
-// (manteniendo los datos locales).
+// 1. Se eliminaron las importaciones de los iconos SVG locales (TrashIcon, CheckIcon, CrossIcon).
+// 2. Se importaron los componentes de icono TrashFill, CheckCircleFill y XCircleFill desde 'react-bootstrap-icons'.
+// 3. Se reemplazaron las etiquetas <img> con los componentes de icono de Bootstrap Icons, ajustando el color y el tamaño con props.
+// 4. Se añadió la clase 'align-middle mr-1' para una mejor alineación vertical y un pequeño margen a la derecha de los iconos.
