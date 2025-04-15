@@ -6,7 +6,7 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
-    const isEditing = !!id; // Check if 'id' exists, indicating editing
+    const isEditing = !!id;
 
     useEffect(() => {
         if (isEditing) {
@@ -86,4 +86,5 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
 
 export default TaskForm;
 
-// Cambio realizado: Se agregó el operador de encadenamiento opcional (?.) al acceder a import.meta.env.
+// No se realizaron cambios significativos en este componente para la persistencia en Local Storage,
+// ya que la actualización del estado se maneja en TaskList a través de la prop setTasks.
