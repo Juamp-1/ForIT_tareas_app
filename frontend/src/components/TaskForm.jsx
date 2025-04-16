@@ -75,6 +75,7 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
                         onChange={e => setTitle(e.target.value)}
                         placeholder="Ingrese el título"
                         required
+                        
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -86,7 +87,7 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
                         onChange={e => setDescription(e.target.value)}
                         placeholder="Ingrese la descripción"
                         required
-                        style={{ resize: 'none' }} // Deshabilita el redimensionamiento del textarea
+                        style={{ resize: 'none' }} 
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit" className="mr-2">
