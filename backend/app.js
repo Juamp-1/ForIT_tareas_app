@@ -94,7 +94,7 @@ app.delete('/api/tasks/:id', (req, res) => {
 
 // Inicializa el servidor
 app.listen (PORT, () => {
-    console.log(`Server running on port http://localhost:${PORT}`);
+    console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
 });
 
 // Cambio realizado:
