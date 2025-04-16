@@ -125,6 +125,7 @@ const TaskItem = () => {
                             Completada:
                             <input
                                 type="checkbox"
+                                font-size="10px"
                                 checked={task?.complete}
                                 onChange={handleCompleteChange}
                             />
@@ -146,6 +147,7 @@ const TaskItem = () => {
                                 checked={task?.complete}
                                 onChange={handleCompleteChange}
                                 readOnly // Make it read-only on the details page
+                                style={{ marginBottom:"1rem" ,marginLeft: "0.5rem"}}
                             />
                         </label>
                     </div>

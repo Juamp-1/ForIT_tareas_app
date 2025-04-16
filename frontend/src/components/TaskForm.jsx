@@ -92,7 +92,6 @@ const TaskForm = ({ setTasks: propSetTasks }) => {
                 <Button variant="primary" type="submit" className="mr-2">
                     {isEditing ? 'Guardar Cambios' : (
                         <>
-                            <PlusCircleFill size={16} className="align-middle mr-2" />
                             Agregar Tarea
                         </>
                     )}  
